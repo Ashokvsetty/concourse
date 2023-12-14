@@ -1,0 +1,28 @@
+resources:
+- name: concourse-repo 
+  type: git
+  source:
+    uri: https://github.com/Ashokvsetty/concourse
+    branch: main
+
+jobs:
+- name: test
+  plan:
+  - get: concourse-repo
+    trigger: true
+  - task: unit-tests
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: node, tag: latest}
+      inputs:
+      - name: concourse-repo
+      run:
+        path: /bin/sh
+        args:
+        - -exc
+        - |
+          cd concourse-repo
+          npm install
+          npm test
