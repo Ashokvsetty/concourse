@@ -1,0 +1,9 @@
+jobs:
+- name: hello-world-job
+  plan:
+  - get: some-resource
+    path: my-app
+  - task: print-hello
+    image: ubuntu:latest
+    script: |
+      echo "Hello World!"
